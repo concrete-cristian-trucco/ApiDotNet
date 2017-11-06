@@ -1,15 +1,21 @@
 FROM microsoft/dotnet:latest
-
-# Create directory for the app source code
 RUN mkdir -p /usr/src/
 
 COPY pocbbm /usr/src/pocbbm
-# Copy the source and restore dependencies
-#COPY . /usr/src/books
+
 WORKDIR /usr/src/pocbbm/source/Poc/Poc.IB.Api/
-RUN dotnet restore 
-# Expose the port and start the app
-EXPOSE 80
-EXPOSE 52827
+RUN chmod 777 /usr/src/pocbbm/source/Poc/Poc.IB.Api/
+
+RUN dotnet restore
+RUN dotnet build
+
+#Persisntencia de dados
+VOLUME dados:/usr/src/pocbbm/source/Poc/Poc.IB.Api/
+
+# Expor as portas da APi Ted
 EXPOSE 52828
+EXPOSE 52827
+#EXPOSE 54665
+#EXPOSE 54664
+
 CMD [ "dotnet", "run"]
